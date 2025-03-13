@@ -4,9 +4,28 @@ import { genSalt, hash } from 'bcryptjs';
 const register=async(req,res)=>{
     try{
      const {name,email,password}=req.body;
-     if(!name || !email || !password){
-        return res.status(400).json({message:"Please fill in all fields"});
-     }
+     
+    if(!name){
+        return res.status(400).json({
+            message:"Please fill name",
+            error:true,
+            success:false
+        })
+    }
+    if(!email){
+        return res.status(400).json({
+            message:"Please fill email",
+            error:true,
+            success:false
+        })
+    }
+    if(!password){
+        return res.status(400).json({
+            message:"Please fill password",
+            error:true,
+            success:false
+        })
+    }
 
      const userExist=await User.findOne({email});
      if(userExist){

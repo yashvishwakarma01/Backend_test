@@ -16,6 +16,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import validatePost from "./middleware/validatePost.js";
 import errorHandler from './middleware/errorHandler.js';
+import deletePost from './controllers/deletePost.js'
 
 config();
 const app=express();
@@ -42,8 +43,13 @@ app.use(
         stream: accessLogStream, 
     })
 );
+const corsOptions = {
+    origin: ["http://localhost:5000"],
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true, 
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(json());
 app.use(cookieParser());
 app.use(errorHandler)
@@ -51,8 +57,8 @@ app.use(errorHandler)
 app.post('/api/login',Login)
 app.post('/api/signup',register)
 app.post("/api/post",auth,postData)
-app.get('/api/posts',auth,validatePost,fetchData)
-
+app.get('/api/posts',auth,fetchData)
+app.delete('/api/delete',auth,deletePost)
 
 const PORT=process.env.PORT || 8000
 
